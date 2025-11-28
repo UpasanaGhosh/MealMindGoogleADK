@@ -269,7 +269,7 @@ print("✅ Cost & schedule tools ready (4 tools)")
 ```python
 profile_agent = LlmAgent(
     name="profile_manager",
-    model=Gemini(model="gemini-2.0-flash-exp", retry_options=retry_config),
+    model=Gemini(model="gemini-2.0-flash-exp", api_key=GOOGLE_API_KEY, retry_options=retry_config),
     instruction="""You are the Profile Manager for MealMind.
     
 Your role: Gather and validate household information.
@@ -292,7 +292,7 @@ print("✅ Agent 1: Profile Manager created")
 ```python
 recipe_agent = LlmAgent(
     name="recipe_generator",
-    model=Gemini(model="gemini-2.0-flash-exp", retry_options=retry_config),
+    model=Gemini(model="gemini-2.0-flash-exp", api_key=GOOGLE_API_KEY, retry_options=retry_config),
     instruction="""You are the Recipe Generator for MealMind.
 
 Generate meal recipes that satisfy ALL household constraints.
@@ -317,7 +317,7 @@ print("✅ Agent 2: Recipe Generator created")
 ```python
 nutrition_agent = LlmAgent(
     name="nutrition_validator",
-    model=Gemini(model="gemini-2.0-flash-exp", retry_options=retry_config),
+    model=Gemini(model="gemini-2.0-flash-exp", api_key=GOOGLE_API_KEY, retry_options=retry_config),
     instruction="""You are the Nutrition Compliance Validator.
 
 Validate recipes for safety and nutrition.
@@ -342,7 +342,7 @@ print("✅ Agent 3: Nutrition Validator created")
 # Agent 4: Schedule Optimizer
 schedule_agent = LlmAgent(
     name="schedule_optimizer",
-    model=Gemini(model="gemini-2.0-flash-exp", retry_options=retry_config),
+    model=Gemini(model="gemini-2.0-flash-exp", api_key=GOOGLE_API_KEY, retry_options=retry_config),
     instruction="""You optimize meal schedules.
 
 Analyze cooking time. Find ingredient reuse.
@@ -353,7 +353,7 @@ Suggest batch cooking. Balance workload across days.""",
 # Agent 5: Grocery Generator
 grocery_agent = LlmAgent(
     name="grocery_generator",
-    model=Gemini(model="gemini-2.0-flash-exp", retry_options=retry_config),
+    model=Gemini(model="gemini-2.0-flash-exp", api_key=GOOGLE_API_KEY, retry_options=retry_config),
     instruction="""You create shopping lists.
 
 Aggregate ingredients. Calculate costs.
