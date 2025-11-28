@@ -1,8 +1,8 @@
 # 🍽️ MealMind Google ADK
 
-**Multi-agent meal planning system using Google ADK framework**
+**Complete 5-Agent Meal Planning System using Google ADK Framework**
 
-A production-ready implementation of intelligent meal planning using Google's official Agent Development Kit (ADK).
+A production-ready implementation of intelligent meal planning using Google's official Agent Development Kit (ADK) with Sequential Workflow pattern.
 
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Google ADK](https://img.shields.io/badge/Google%20ADK-1.19.0-green.svg)](https://pypi.org/project/google-adk/)
@@ -12,42 +12,105 @@ A production-ready implementation of intelligent meal planning using Google's of
 
 ## 🎯 Overview
 
-MealMind demonstrates Google ADK's capabilities through a practical meal planning application that:
-- ✅ Generates personalized recipes using Gemini AI
-- ✅ Respects dietary constraints and allergies
-- ✅ Provides nutritional analysis
-- ✅ Estimates ingredient costs
-- ✅ Creates multi-day meal plans
+MealMind demonstrates Google ADK's Sequential Workflow through a practical meal planning application for families with complex dietary needs.
 
-## 🏗️ Architecture
+**Key Features:**
+- ✅ 5 specialized agents working in sequence
+- ✅ 12 custom tools for meal planning
+- ✅ Allergen safety validation
+- ✅ Health condition management
+- ✅ Budget tracking
+- ✅ Cooking time optimization
+- ✅ Grocery list generation
+
+---
+
+## 🏗️ 5-Agent Architecture
 
 ```
-┌─────────────────────────────────────┐
-│         MealMind ADK App            │
-│    (google.adk.apps.app.App)        │
-└────────────┬────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────┐
-│      ADK Runner                     │
-│  (google.adk.runners.Runner)        │
-└────────────┬────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────┐
-│    Recipe Generator Agent           │
-│  (google.adk.agents.LlmAgent)       │
-│                                     │
-│  Model: Gemini 2.0 Flash            │
-│  Tools: 3 ADK tools                 │
-└────────────┬────────────────────────┘
-             │
-             ▼
-┌─────────────────────────────────────┐
-│   InMemorySessionService            │
-│  (google.adk.sessions)              │
-└─────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                    SEQUENTIAL WORKFLOW                            │
+└──────────────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌────────────────────────┐
+│  1. Profile Manager     │  → Gathers household constraints
+└────────┬───────────────┘
+         │
+         ▼
+┌────────────────────────┐
+│  2. Recipe Generator    │  → Generates meals with Gemini
+└────────┬───────────────┘
+         │
+         ▼
+┌────────────────────────┐
+│  3. Nutrition Validator │  → Validates safety & nutrition
+└────────┬───────────────┘
+         │
+         ▼
+┌────────────────────────┐
+│  4. Schedule Optimizer  │  → Optimizes cooking schedule
+└────────┬───────────────┘
+         │
+         ▼
+┌────────────────────────┐
+│  5. Grocery Generator   │  → Creates shopping list
+└────────────────────────┘
 ```
+
+---
+
+## 🔧 Agent Details
+
+### 1. Profile Manager Agent
+**Purpose:** Manages household profiles and dietary constraints
+
+**Tools (3):**
+- `create_household_profile()` - Create household
+- `add_family_member()` - Add members with restrictions
+- `get_household_constraints()` - Get aggregated constraints
+
+**Output:** Complete household context for recipe generation
+
+### 2. Recipe Generator Agent
+**Purpose:** Generates meal recipes using Gemini AI
+
+**Tools (3):**
+- `get_household_constraints()` - Check constraints
+- `nutrition_lookup()` - Get ingredient nutrition
+- `get_health_guidelines()` - Get health condition rules
+
+**Output:** Array of recipes (3 meals/day × N days)
+
+### 3. Nutrition Validator Agent
+**Purpose:** Validates recipes for safety and nutrition
+
+**Tools (3):**
+- `calculate_recipe_nutrition()` - Calculate nutrition
+- `check_allergens_in_recipe()` - Check allergens (CRITICAL)
+- `get_health_guidelines()` - Validate health compliance
+
+**Output:** Approved recipes with nutrition data
+
+### 4. Schedule Optimizer Agent
+**Purpose:** Optimizes cooking schedule and efficiency
+
+**Tools (2):**
+- `analyze_cooking_time()` - Calculate time stats
+- `find_ingredient_reuse()` - Find reusable ingredients
+
+**Output:** Optimized schedule with batch cooking suggestions
+
+### 5. Grocery Generator Agent
+**Purpose:** Creates organized shopping list
+
+**Tools (2):**
+- `aggregate_ingredients_for_shopping()` - Aggregate ingredients
+- `estimate_ingredient_cost()` - Calculate costs
+
+**Output:** Complete grocery list with costs and tips
+
+---
 
 ## 🚀 Quick Start
 
@@ -77,129 +140,205 @@ echo "GOOGLE_API_KEY=your_api_key_here" > .env
 ### Run Demo
 
 ```bash
-python demo_adk.py
+python demo_complete_5agents.py
 ```
+
+---
 
 ## 📂 Project Structure
 
 ```
 MealMindGoogleADK/
-├── agents/
-│   └── recipe_generator_adk.py    # LlmAgent implementation
 ├── tools/
-│   └── adk_tools.py               # ADK-compliant tools
+│   └── complete_adk_tools.py        # 12 ADK tools
+├── agents/
+│   └── recipe_generator_adk.py      # Individual agent (legacy)
+├── workflow_sequential_adk.py       # 5-agent Sequential workflow
+├── demo_complete_5agents.py         # Complete demo script
 ├── notebooks/
-│   └── kaggle_adk_complete.ipynb  # Kaggle notebook demo
-├── orchestrator_adk.py            # Runner + App
-├── demo_adk.py                    # Demo script
-├── requirements.txt               # Dependencies
-└── README.md                      # This file
+│   └── complete_5agent_workflow.ipynb  # Kaggle notebook (14 cells)
+├── requirements.txt
+└── README.md
 ```
 
-## 🔧 Core Components
+---
 
-### 1. **LlmAgent** (`agents/recipe_generator_adk.py`)
-- Gemini 2.0 Flash integration
-- Custom system prompts
-- Tool integration
+## 💡 Usage Example
 
-### 2. **ADK Tools** (`tools/adk_tools.py`)
-- `nutrition_lookup_adk()` - Nutritional data
-- `get_household_constraints_adk()` - Dietary restrictions
-- `estimate_cost_adk()` - Cost estimation
-
-### 3. **Orchestrator** (`orchestrator_adk.py`)
-- Runner for agent execution
-- InMemorySessionService for state
-- App wrapper with event compaction
-
-### 4. **Demo** (`demo_adk.py`)
-- Complete meal planning workflow
-- Session management
-- Error handling
-
-## 💡 Key Features
-
-### Retry Configuration
 ```python
-retry_config = types.HttpRetryOptions(
-    attempts=5,
-    exp_base=7,
-    initial_delay=1,
-    http_status_codes=[429, 500, 503, 504]
+import asyncio
+from workflow_sequential_adk import create_meal_planning_runner
+from tools.complete_adk_tools import (
+    create_household_profile,
+    add_family_member
 )
-```
-Ensures robust API calls with automatic retry on rate limits.
 
-### Session Management
-```python
-session_service = InMemorySessionService()
-runner = Runner(agent=recipe_agent, session_service=session_service)
-```
-Maintains conversation state across interactions.
-
-### Event Compaction
-```python
-app = App(
-    agent=recipe_agent,
-    events_compaction_config=EventsCompactionConfig(
-        enabled=True,
-        max_events=1000
+async def generate_plan():
+    # Setup household
+    create_household_profile("family_01", "My Family", 45, 150.0, "Italian, Asian")
+    add_family_member("family_01", "Parent", 35, "vegetarian", "", "diabetes")
+    add_family_member("family_01", "Child", 8, "", "peanuts", "")
+    
+    # Create runner
+    runner = create_meal_planning_runner(api_key="your_key")
+    
+    # Generate meal plan
+    result = await runner.run_debug(
+        "Generate 3-day meal plan for family_01 household"
     )
-)
-```
-Optimizes memory usage for long-running sessions.
+    
+    print(result)
 
-## 📊 Usage Example
-
-```python
-from orchestrator_adk import create_adk_orchestrator
-
-# Initialize
-orchestrator = create_adk_orchestrator(api_key="your_key")
-
-# Generate meal plan
-result = orchestrator.generate_meal_plan(
-    household_id="demo_family",
-    preferences={"focus": "healthy meals"},
-    num_days=3
-)
-
-print(result)
+asyncio.run(generate_plan())
 ```
 
-## 🔬 Google ADK Components Used
+---
 
-| Component | Purpose | Implementation |
-|-----------|---------|----------------|
-| `LlmAgent` | AI agent with tools | Recipe generation |
-| `Gemini` | LLM model | Gemini 2.0 Flash |
-| `Runner` | Agent execution | Meal plan orchestration |
-| `InMemorySessionService` | State management | Conversation tracking |
-| `App` | Production wrapper | Event compaction |
-| `ToolContext` | Tool integration | Custom tool functions |
+## 📊 Complete Tool Inventory
+
+### Profile Management (3 tools)
+- `create_household_profile()` - Initialize household
+- `add_family_member()` - Add members
+- `get_household_constraints()` - Get constraints
+
+### Nutrition Analysis (4 tools)
+- `nutrition_lookup()` - Get nutrition data
+- `calculate_recipe_nutrition()` - Calculate recipe nutrition
+- `get_health_guidelines()` - Get health condition rules
+- `check_allergens_in_recipe()` - Check allergens
+
+### Cost Management (2 tools)
+- `estimate_ingredient_cost()` - Estimate costs
+- `calculate_meal_plan_cost()` - Calculate total cost
+
+### Schedule Optimization (2 tools)
+- `analyze_cooking_time()` - Analyze time
+- `find_ingredient_reuse()` - Find reuse opportunities
+
+### Grocery Planning (1 tool)
+- `aggregate_ingredients_for_shopping()` - Create shopping list
+
+---
 
 ## 📓 Kaggle Notebook
 
-A complete 13-cell Kaggle notebook is included in `notebooks/kaggle_adk_complete.ipynb`:
-- Cell-by-cell walkthrough
-- Retry configuration
-- Single recipe generation
-- 3-day meal plan generation
-- Session history viewing
+Complete 14-cell notebook in `notebooks/complete_5agent_workflow.ipynb`:
 
-## 🎓 Capstone Project
+1. Install dependencies
+2. Import libraries
+3. Configure API key + retry
+4. Define data & tools
+5. Profile tools
+6. Nutrition & cost tools
+7. Optimization & grocery tools
+8. Collect all tools
+9. Create 5 agents
+10. Create Sequential workflow
+11. Setup demo household
+12. Generate 3-day meal plan
+13. Display results
+14. Summary (markdown)
+
+**Ready to run on Kaggle!**
+
+---
+
+## 🎓 Capstone Demonstration
 
 This project demonstrates:
-1. **Official Google ADK Integration** - Using `google-adk` v1.19.0
-2. **Production-Ready Architecture** - Error handling, retry logic, session management
-3. **Real-World Application** - Practical meal planning with constraints
-4. **Tool Integration** - Custom tools with ToolContext
-5. **Multi-Agent Patterns** - Orchestration and coordination
+
+### 1. Official Google ADK Integration
+- Using `google-adk` v1.19.0
+- SequentialAgent for workflow coordination
+- LlmAgent with Gemini 2.0 Flash
+- InMemoryRunner for execution
+
+### 2. Multi-Agent System
+- 5 specialized agents
+- Sequential workflow pattern
+- Agent-to-agent data handoff
+- Complete meal planning pipeline
+
+### 3. Tool Integration
+- 12 custom tools
+- No ToolContext (ADK automatic calling)
+- Proper type hints and docstrings
+- Error handling
+
+### 4. Production Features
+- Retry configuration for API robustness
+- Allergen safety checks
+- Budget compliance
+- Health condition management
+- Cooking time optimization
+
+### 5. Real-World Application
+- Family meal planning with constraints
+- 3-7 day planning capability
+- Grocery list generation
+- Cost optimization
+
+---
+
+## 🧪 Example Use Case
+
+**Family Setup:**
+- **Alice** (35) - Vegetarian, PCOS
+- **Bob** (33) - Nut allergy, Diabetes
+- **Charlie** (8) - No restrictions
+- **Budget:** $150/week
+- **Time:** Max 45 min/day cooking
+
+**System Output:**
+1. ✅ 3-day meal plan (9 recipes)
+2. ✅ All recipes vegetarian-friendly
+3. ✅ No nuts in any recipe
+4. ✅ PCOS & diabetes guidelines followed
+5. ✅ Cooking time optimized
+6. ✅ Grocery list under budget
+
+---
+
+## 🔑 Key Google ADK Patterns Used
+
+### Sequential Agent Pattern
+```python
+workflow = SequentialAgent(
+    name="meal_planning",
+    agents=[agent1, agent2, agent3, agent4, agent5]
+)
+```
+
+### LlmAgent with Tools
+```python
+agent = LlmAgent(
+    name="agent_name",
+    model=Gemini(model="gemini-2.0-flash-exp", retry_options=config),
+    instruction="Clear instructions with tool usage guidelines",
+    tools=[tool1, tool2, tool3]
+)
+```
+
+### InMemoryRunner
+```python
+runner = InMemoryRunner(agent=workflow)
+result = await runner.run_debug(prompt)
+```
+
+### Retry Configuration
+```python
+retry_config = types.RetryOptions(
+    max_attempts=5,
+    backoff_base=7,
+    initial_delay=1
+)
+```
+
+---
 
 ## 📝 License
 
-MIT License - see LICENSE file for details
+MIT License
 
 ## 🤝 Contributing
 
@@ -211,4 +350,4 @@ For questions or feedback, please open an issue on GitHub.
 
 ---
 
-**Built with Google ADK** • **Powered by Gemini** • **Production-Ready**
+**Built with Google ADK** • **Powered by Gemini** • **5-Agent System** • **Production-Ready**
