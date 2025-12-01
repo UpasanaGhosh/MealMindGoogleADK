@@ -108,10 +108,7 @@ MealMindGoogleADK/
 │   ├── display_utils.py                 # Output formatting
 │   └── meal_planning_utils.py           # Helper functions
 │
-├── notebooks/                           # Demo Notebooks
-│   ├── capstone_kaggle_notebook.ipynb   # Original demo
-│   └── MEALMIND-FINAL-DEMO.ipynb        # Final demo with docs
-│
+├── MEALMIND-FINAL-DEMO.ipynb            # Complete demo notebook with docs
 ├── orchestrator.py                      # Sequential workflow coordinator
 ├── demo_complete.py                     # Demo script
 ├── requirements.txt                     # Dependencies

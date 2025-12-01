@@ -5,7 +5,7 @@ from google.genai import types
 from agents import (
     create_recipe_generator_agent,
     create_nutrition_validator_agent,
-    create_meal_coordinator_agent
+    create_schedule_optimizer_agent
 )
 from utils import optimize_schedule, generate_grocery_list
 import os
@@ -33,16 +33,16 @@ class MealPlanOrchestrator:
         # Create 3 LLM agents
         self.recipe_agent = create_recipe_generator_agent(self.api_key, retry_config)
         self.nutrition_agent = create_nutrition_validator_agent(self.api_key, retry_config)
-        self.coordinator_agent = create_meal_coordinator_agent(self.api_key, retry_config)
+        self.schedule_optimizer_agent = create_schedule_optimizer_agent(self.api_key, retry_config)
         
         # Create sequential workflow (3 agents only)
         self.workflow = SequentialAgent(
             name="meal_planning_workflow",
             description="3-agent meal planning system with Python utilities",
             agents=[
-                self.recipe_agent,       # 1. Generate recipes
-                self.nutrition_agent,    # 2. Validate safety
-                self.coordinator_agent   # 3. Coordinate final output
+                self.recipe_agent,              # 1. Generate recipes
+                self.nutrition_agent,           # 2. Validate safety
+                self.schedule_optimizer_agent   # 3. Optimize schedule
             ]
         )
         
@@ -68,7 +68,7 @@ class MealPlanOrchestrator:
 WORKFLOW:
 1. Recipe Generator: Create {days*3} recipes (breakfast, lunch, dinner per day)
 2. Nutrition Validator: Validate each recipe for safety
-3. Meal Coordinator: Format final output
+3. Schedule Optimizer: Optimize cooking schedule and format final output
 
 Start by checking household constraints with get_household_constraints('{household_id}')."""
         

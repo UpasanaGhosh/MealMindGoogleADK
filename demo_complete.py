@@ -1,4 +1,4 @@
-"""Complete demo for 5-agent MealMind system."""
+"""Complete demo for 3-agent MealMind system."""
 import os
 import json
 import asyncio
@@ -10,8 +10,8 @@ load_dotenv()
 
 
 async def main():
-    """Run complete 5-agent demo."""
-    print("🚀 MealMind Complete 5-Agent System")
+    """Run complete 3-agent demo."""
+    print("🚀 MealMind Complete 3-Agent System")
     print("=" * 70)
     
     api_key = os.getenv("GOOGLE_API_KEY")
@@ -37,18 +37,16 @@ async def main():
     print(json.dumps(constraints, indent=2))
     
     # Step 4: Initialize orchestrator
-    print("\n🤖 Step 4: Initializing 5-agent orchestrator...")
+    print("\n🤖 Step 4: Initializing 3-agent orchestrator...")
     orchestrator = create_orchestrator(api_key)
     print("✅ Orchestrator ready")
-    print("   • Profile Manager")
     print("   • Recipe Generator")
     print("   • Nutrition Validator")
     print("   • Schedule Optimizer")
-    print("   • Grocery Generator")
     
     # Step 5: Generate meal plan
     print("\n🍽️  Step 5: Generating 3-day meal plan...")
-    print("Processing through all 5 agents...")
+    print("Processing through 3-agent sequential workflow...")
     
     result = await orchestrator.generate_meal_plan("demo_family", days=3)
     
